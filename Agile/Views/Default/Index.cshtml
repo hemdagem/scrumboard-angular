@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+
+<div class="col-md-2">
+    <h2>Ready</h2>
+    <ul class="list-unstyled">
+        <li ng-repeat="story in stories | filter:{status:1}" class="panel panel-default">
+            <span contenteditable="true" ng-model="title">{{story.title}}</span>
+            <span>{{story.points}}</span>
+            <span>{{story.status}}</span>
+        </li>
+    </ul>
+</div>
+<div class="col-md-2">
+    <h2>Commit</h2>
+    <ul>
+        <li ng-repeat="story in stories | filter:{status:2}">
+            <span>{{story.title}}</span>
+            <span>{{story.points}}</span>
+            <span>{{story.status}}</span>
+        </li>
+    </ul>
+</div>
+<div class="col-md-3">
+    <h2>In Progress</h2>
+    <ul>
+        <li ng-repeat="story in stories | filter:{status:3}" >
+            <span>{{story.title}}</span>
+            <span>{{story.points}}</span>
+            <span>{{story.status}}</span>
+        </li>
+    </ul>
+</div>
+<div class="col-md-2">
+    <h2>QA</h2>
+    <ul>
+        <li ng-repeat="story in stories | filter:{status:4}">
+            <span contenteditable="true">{{story.title}}</span>
+            <span>{{story.points}}</span>
+            <span>{{story.status}}</span>
+        </li>
+    </ul>
+</div>
+<div class="col-md-2">
+    <h2>Demo</h2>
+    <ul>
+        <li ng-repeat="story in stories | filter:{status:5}">
+            <span>{{story.title}}</span>
+            <span>{{story.points}}</span>
+            <span>{{story.status}}</span>
+        </li>
+    </ul>
+</div>
