@@ -35,16 +35,31 @@ function CardsController($scope) {
         updateLocalStorage();
     };
     
+    $scope.editStory = function ($editData) {
+    
+    
+        $('#myModal').modal('show');
+    };
+    
     $scope.addStory = function () {
         $scope.stories.push({
             title: $scope.title,
             points: $scope.points,
-            status: 1
+            status: $scope.status,
+            criteria: $scope.criteria
         });
         
         updateLocalStorage();
+        $scope.form.$setPristine();
         $('#myModal').modal('hide');
     };
+    
+    $(".list-group").sortable({
+        connectWith: ".list-group",
+        placeholder: "ui-state-highlight",
+        dropOnEmpty: true,
+        handle : '.glyphicon-move'
+    });
 }
 
 angular.module('scrumBoard', []).directive('contenteditable', function () {

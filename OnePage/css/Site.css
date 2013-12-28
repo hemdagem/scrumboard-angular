@@ -1,0 +1,23 @@
+body {
+    padding-top: 50px;
+}
+
+.ui-state-highlight
+{
+    list-style: none;
+    min-height:50px;
+}
+
+.list-group {
+    min-height: 5px;
+    border: 1px solid black;
+}
+
+h2{
+    text-align:center;
+}
+
+.glyphicon.glyphicon-pencil:hover {
+    
+    cursor:pointer;
+}
