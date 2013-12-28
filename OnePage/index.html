@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="scrumBoard">
     <head>
         <meta charset="utf-8" />
@@ -6,9 +6,8 @@
         <title>Angular Scrum Board</title>
         <link href="css/site.css" rel="stylesheet" type="text/css" />
         <link href="css/bootstrap.css" rel="stylesheet" />
-        <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" />
-        <!--<link href="css/bootstrap-theme.min.css" rel="stylesheet" />-->
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+        <link href="css/jquery-ui.css" rel="stylesheet" />
+        <script src="js/angular.min.js"></script>
         
     </head>
     <body ng-controller="CardsController">
@@ -36,11 +35,11 @@
         
         <div class="container">
             <div class="row">
-                <div class="col-md-2">
-                    <h2>Ready</h2>
+                <div class="col-md-2" ng-repeat="card in board.cards">
+                    <h2>{{card.title}}</h2>
                     
                     <ul class="list-group">
-                        <li  ng-repeat="story in stories | filter:{status:1}" class="list-group-item">
+                        <li  ng-repeat="story in card.stories | filter:{status:card.status}" class="list-group-item">
                            <!-- <span class="glyphicon glyphicon-pencil" ng-click="editStory(story)"></span>-->
                             <span class="glyphicon glyphicon-move"></span>
                             <span class="badge">{{story.points}}</span>
@@ -48,51 +47,6 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-2">
-                    <h2>Commit</h2>
-                    <ul class="list-group">
-                        <li ng-repeat="story in stories | filter:{status:2}" class="list-group-item">
-                             <span class="glyphicon glyphicon-move"></span>
-                            <span class="badge">{{story.points}}</span>
-                            
-                            <div contenteditable="true" ng-model="title">{{story.title}}</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h2>In Progress</h2>
-                    <ul class="list-group">
-                        <li ng-repeat="story in stories | filter:{status:3}" class="list-group-item">
-                            <span class="glyphicon glyphicon-move"></span>
-                            <span class="badge">{{story.points}}</span>
-                            <div contenteditable="true" ng-model="title">{{story.title}}</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-2">
-                    <h2>QA</h2>
-                    <ul class="list-group">
-                        <li ng-repeat="story in stories | filter:{status:4}" class="list-group-item">
-                            <span class="badge">{{story.points}}</span>
-                            <div contenteditable="true" ng-model="title">{{story.title}}</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-2">
-                    <h2>Demo</h2>
-                    <ul class="list-group">
-                        <li ng-repeat="story in stories | filter:{status:5}" class="list-group-item">
-                            <span class="badge">{{story.points}}</span>
-                            <div contenteditable="true" ng-model="title">{{story.title}}</div>
-                        </li>
-                    </ul>
-                </div>
-                
-                
-                <!--   <hr />
-<footer>
-<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-</footer> -->
                 
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -120,11 +74,7 @@
                                         
                                         <label for="status">Status</label>
                                         <select id="status" ng-model="status">
-                                            <option value="1">Ready</option>
-                                            <option value="2">Commit</option>
-                                            <option value="3">In Progress</option>
-                                            <option value="4">QA</option>
-                                            <option value="5">Demo</option>
+                                            <option ng-repeat="card in board.cards" value="{{card.status}}">{{card.title}}</option>
                                         </select>
                                     </p>
                                     
@@ -147,7 +97,7 @@
         </div>
         
         <script src="js/jquery-1.10.2.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script src="js/jquery-ui.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/app.js"></script>
     </body>
