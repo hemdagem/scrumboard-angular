@@ -5,6 +5,7 @@ function CardsController($scope) {
     "use strict";
 
     $scope.board = {};
+    $scope.board.points = [];
     $scope.board.cards = [];
     $scope.board.cards.stories = [];
 
@@ -12,15 +13,20 @@ function CardsController($scope) {
 
     function updateLocalStorage() {
         if (window.localStorage) {
-            window.localStorage.setItem("board", JSON.stringify($scope.board));
+            window.localStorage.setItem("board", angular.toJson($scope.board));
         }
     }
 
     if (window.localStorage && window.localStorage.getItem("board")) {
 
-        $scope.board = JSON.parse(window.localStorage.getItem("board"));
+        $scope.board = angular.fromJson(window.localStorage.getItem("board"));
     }
 
+    if (!$scope.board.points || $scope.board.points.length == 0) {
+
+        $scope.board.points = [];
+        $scope.board.points.push(1, 2, 3, 5, 8, 13);
+    }
 
     if (!$scope.board.cards || $scope.board.cards.length == 0) {
 
@@ -55,16 +61,30 @@ function CardsController($scope) {
     }
 
     $scope.clearBoard = function () {
-        $scope.board.stories = [];
+        angular.forEach($scope.board.cards, function (card) {
+            card.stories = [];
+        });
+
         updateLocalStorage();
     };
 
 
-    $scope.setPosition = function (id, status) {
+    $scope.setPosition = function () {
 
-        angular.forEach($scope.stories, function (story) {
-            if (story.$$hashKey === id) {
-                story.status = status;
+        var cardId = parseInt(this.cardId);
+
+        var storyToCopy = this.story;
+
+        this.card.stories.splice(this.$index, 1);
+
+        angular.forEach($scope.board.cards, function (cardItem) {
+
+            if (cardItem.status === cardId) {
+                cardItem.stories.push({
+                    title: storyToCopy.title,
+                    points: storyToCopy.points,
+                    criteria: storyToCopy.criteria
+                });
                 return;
             }
         });
@@ -96,7 +116,6 @@ function CardsController($scope) {
         card.stories.push({
             title: $scope.title,
             points: $scope.points,
-            status: $scope.status,
             criteria: $scope.criteria
         });
 
@@ -104,7 +123,7 @@ function CardsController($scope) {
         $('#myModal').modal('hide');
     };
 
-    
+
     angular.element(document).ready(function () {
         $(".list-group").sortable({
             connectWith: ".list-group",
@@ -128,9 +147,22 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
             // view -> model
             elm.on('blur', function () {
                 scope.$apply(function () {
-                    scope.updateStory(scope.board.story.$$hashKey, elm.html());
+                    scope.updateStory(scope.story.$$hashKey, elm.html());
                 });
             });
         }
     };
+}).directive('jqsortable', function () {
+    "use strict";
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+
+
+
+        }
+
+    };
 });
+
+
