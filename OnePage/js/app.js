@@ -17,9 +17,9 @@ function CardsController($scope) {
         }
     }
 
-    if (window.localStorage && window.localStorage.getItem("board")) {
+    if (window.localStorage) {
 
-        $scope.board = angular.fromJson(window.localStorage.getItem("board"));
+        $scope.board = angular.fromJson(window.localStorage.getItem("board") || {});
     }
 
     if (!$scope.board.points || $scope.board.points.length == 0) {
@@ -58,6 +58,8 @@ function CardsController($scope) {
             stories: []
         });
 
+        $scope.board.cardId = $scope.board.cards[0];
+
     }
 
     $scope.clearBoard = function () {
@@ -89,6 +91,12 @@ function CardsController($scope) {
             }
         });
 
+        updateLocalStorage();
+    }
+
+    $scope.removeStory = function ()
+    {
+        this.card.stories.splice(this.$index, 1);
         updateLocalStorage();
     }
 

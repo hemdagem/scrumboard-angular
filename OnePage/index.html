@@ -41,12 +41,10 @@
                 <ul class="list-group" data-status="{{card.status}}">
                     <li ng-repeat="story in card.stories" class="list-group-item" jqsortable ng-model="story">
                         <!-- <span class="glyphicon glyphicon-pencil" ng-click="editStory(story)"></span>-->
-                        <span class="glyphicon glyphicon-move"></span>
+                        <span class="glyphicon glyphicon-remove" ng-click="removeStory()"></span>
                         <span class="badge">{{story.points}}</span>
                         <div contenteditable="true" ng-model="title">{{story.title}}</div>
-                        <select ng-model="cardId" ng-change="setPosition()" >
-                            <option ng-repeat="cardItem in board.cards" value="{{cardItem.status}}">{{cardItem.title}}</option>
-                        </select>
+                        <select ng-model="cardId" ng-change="setPosition()" ng-options="c.status as c.title for c in board.cards"></select>
                     </li>
                 </ul>
             </div>
