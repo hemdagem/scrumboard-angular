@@ -39,10 +39,10 @@
                 <h2>{{card.title}}</h2>
 
                 <ul class="list-group" data-status="{{card.status}}">
-                    <li ng-repeat="story in card.stories" class="list-group-item" jqsortable ng-model="story">
-
-                        <span class="glyphicon glyphicon-refresh" ng-click="flip()"></span>
+                    <li ng-repeat="story in card.stories" class="list-group-item" ng-model="story">
                         <span class="glyphicon glyphicon-remove" ng-click="removeStory()"></span>
+                        <span class="glyphicon glyphicon-refresh pull-right" ng-click="flip()"></span>
+                        
                         <div class=" item {{card.cssClass}}" >
                             <div class="front">
                                 <span class="badge">{{story.points}}</span>

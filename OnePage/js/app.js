@@ -2,68 +2,56 @@
 /*global angular */
 /*global $ */
 
-function updateLocalStorage(scope) {
-    window.localStorage.setItem("board", angular.toJson(scope.board));
+function updateLocalStorage(board) {
+    window.localStorage.setItem("board", angular.toJson(board));
+}
+
+function resetBoard() {
+    var board = {};
+    board.points = [
+         { point: 1 },
+         { point: 2 },
+         { point: 3 },
+         { point: 5 },
+         { point: 8 },
+         { point: 13 }
+    ];
+
+    board.point = board.points[0];
+
+    board.cards = [
+    { title: "Ready", status: 1, stories: [], cssClass: "" },
+    { title: "Commit", status: 2, stories: [], cssClass: "" },
+    { title: "In Progress", status: 3, stories: [], cssClass: "" },
+    { title: "QA", status: 4, stories: [], cssClass: "" },
+    { title: "Demo", status: 5, stories: [], cssClass: "" }
+    ];
+
+    board.status = { title: "Ready", status: 1 };
+
+    updateLocalStorage(board);
+
+    return board;
 }
 
 function CardsController($scope) {
     "use strict";
 
-    var index = 0;
-
-    function resetBoard() {
-        $scope.board = {};
-        $scope.board.points = [];
-        $scope.board.cards = [];
-        $scope.board.cards.stories = [];
-
-        $scope.board.points = [
-          { point: 1 },
-          { point: 2 },
-          { point: 3 },
-          { point: 5 },
-          { point: 8 },
-          { point: 13 }
-        ];
-
-        $scope.board.point = $scope.board.points[0];
-
-        $scope.board.cards = [
-        { title: "Ready", status: 1, stories: [], cssClass:"" },
-        { title: "Commit", status: 2, stories: [], cssClass: "" },
-        { title: "In Progress", status: 3, stories: [], cssClass: "" },
-        { title: "QA", status: 4, stories: [], cssClass: "" },
-        { title: "Demo", status: 5, stories: [], cssClass: "" }
-
-        ];
-
-        $scope.board.status = { title: "Ready", status: 1 };
-
-        updateLocalStorage($scope);
-
-        return $scope.board;
-    }
+    $scope.board = angular.fromJson(window.localStorage.getItem("board") || resetBoard());
 
     $scope.resetBoard = function () {
-
         resetBoard();
     }
 
-    $scope.board = angular.fromJson(window.localStorage.getItem("board") || resetBoard());
-
-
     $scope.flip = function () {
         this.card.cssClass = this.card.cssClass === "flip" ? "" : "flip";
-        updateLocalStorage($scope);
+        updateLocalStorage($scope.board);
     }
 
-   
     $scope.setPosition = function () {
 
         var cardId = parseInt(this.cardId);
-
         var storyToCopy = this.story;
-
         this.card.stories.splice(this.$index, 1);
 
         angular.forEach($scope.board.cards, function (cardItem) {
@@ -78,12 +66,12 @@ function CardsController($scope) {
             }
         });
 
-        updateLocalStorage($scope);
+        updateLocalStorage($scope.board);
     }
 
     $scope.removeStory = function () {
         this.card.stories.splice(this.$index, 1);
-        updateLocalStorage($scope);
+        updateLocalStorage($scope.board);
     }
 
     $scope.addStory = function () {
@@ -96,7 +84,7 @@ function CardsController($scope) {
             criteria: $scope.criteria
         });
 
-        updateLocalStorage($scope);
+        updateLocalStorage($scope.board);
         $('#myModal').modal('hide');
     };
 }
@@ -110,18 +98,15 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
             elm.on('blur', function (e) {
 
                 scope.$apply(function () {
-                    var control = ctrl;
                     var attribs = attrs;
-                    if (attribs.ngModel === "title")
-                    {
+                    if (attribs.ngModel === "title") {
                         scope.story.title = elm.html();
                     }
-                    else
-                    {
+                    else {
                         scope.story.criteria = elm.html();
                     }
 
-                    updateLocalStorage(scope.$parent);
+                    updateLocalStorage(scope.$parent.board);
                 });
             });
         }

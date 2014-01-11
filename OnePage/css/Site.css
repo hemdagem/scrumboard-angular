@@ -2,6 +2,19 @@ body {
     padding-top: 50px;
 }
 
+h2 {
+    text-align: center;
+}
+
+.glyphicon.glyphicon-remove:hover {
+    cursor: pointer;
+}
+
+
+.glyphicon.glyphicon-refresh.pull-right:hover {
+    cursor: pointer;
+}
+
 .ui-state-highlight {
     list-style: none;
     min-height: 50px;
@@ -44,15 +57,3 @@ body {
             -webkit-transform: rotateX(-180deg);
             -moz-transform: rotateX(-180deg);
         }
-
-
-
-
-
-h2 {
-    text-align: center;
-}
-
-.glyphicon.glyphicon-move:hover {
-    cursor: pointer;
-}
