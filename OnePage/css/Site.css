@@ -2,10 +2,9 @@ body {
     padding-top: 50px;
 }
 
-.ui-state-highlight
-{
+.ui-state-highlight {
     list-style: none;
-    min-height:50px;
+    min-height: 50px;
 }
 
 .list-group {
@@ -13,11 +12,47 @@ body {
     border: 1px solid black;
 }
 
-h2{
-    text-align:center;
+.list-group-item {
+    -webkit-perspective: 800;
+    -moz-perspective: 800;
+}
+
+    .list-group-item .item.flip {
+        -webkit-transform: rotateX(-180deg);
+        -moz-transform: rotateX(-180deg);
+    }
+
+
+    .list-group-item .item {
+        -webkit-transform-style: preserve-3d;
+        -webkit-transition: 0.5s;
+        -moz-transform-style: preserve-3d;
+        -moz-transition: 0.5s;
+    }
+
+        .list-group-item .item div {
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            z-index: 2;
+        }
+
+        .list-group-item .item .front {
+            z-index: 1;
+        }
+
+        .list-group-item .item .back {
+            -webkit-transform: rotateX(-180deg);
+            -moz-transform: rotateX(-180deg);
+        }
+
+
+
+
+
+h2 {
+    text-align: center;
 }
 
 .glyphicon.glyphicon-move:hover {
-    
-    cursor:pointer;
+    cursor: pointer;
 }

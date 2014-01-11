@@ -1,76 +1,62 @@
 /*global window */
 /*global angular */
 /*global $ */
+
+function updateLocalStorage(scope) {
+    window.localStorage.setItem("board", angular.toJson(scope.board));
+}
+
 function CardsController($scope) {
     "use strict";
 
-    $scope.board = {};
-    $scope.board.points = [];
-    $scope.board.cards = [];
-    $scope.board.cards.stories = [];
-
     var index = 0;
 
-    function updateLocalStorage() {
-        if (window.localStorage) {
-            window.localStorage.setItem("board", angular.toJson($scope.board));
-        }
-    }
-
-    if (window.localStorage) {
-
-        $scope.board = angular.fromJson(window.localStorage.getItem("board") || {});
-    }
-
-    if (!$scope.board.points || $scope.board.points.length == 0) {
-
+    function resetBoard() {
+        $scope.board = {};
         $scope.board.points = [];
-        $scope.board.points.push(1, 2, 3, 5, 8, 13);
-    }
-
-    if (!$scope.board.cards || $scope.board.cards.length == 0) {
-
         $scope.board.cards = [];
+        $scope.board.cards.stories = [];
 
-        $scope.board.cards.push({
-            title: "Ready",
-            status: 1,
-            stories: []
-        },
-        {
-            title: "Commit",
-            status: 2,
-            stories: []
-        },
-        {
-            title: "In Progress",
-            status: 3,
-            stories: []
-        },
-        {
-            title: "QA",
-            status: 4,
-            stories: []
-        },
-        {
-            title: "Demo",
-            status: 5,
-            stories: []
-        });
+        $scope.board.points = [
+          { point: 1 },
+          { point: 2 },
+          { point: 3 },
+          { point: 5 },
+          { point: 8 },
+          { point: 13 }
+        ];
 
-        $scope.board.cardId = $scope.board.cards[0];
+        $scope.board.point = $scope.board.points[0];
 
+        $scope.board.cards = [
+        { title: "Ready", status: 1, stories: [], cssClass:"" },
+        { title: "Commit", status: 2, stories: [], cssClass: "" },
+        { title: "In Progress", status: 3, stories: [], cssClass: "" },
+        { title: "QA", status: 4, stories: [], cssClass: "" },
+        { title: "Demo", status: 5, stories: [], cssClass: "" }
+
+        ];
+
+        $scope.board.status = { title: "Ready", status: 1 };
+
+        updateLocalStorage($scope);
+
+        return $scope.board;
     }
 
-    $scope.clearBoard = function () {
-        angular.forEach($scope.board.cards, function (card) {
-            card.stories = [];
-        });
+    $scope.resetBoard = function () {
 
-        updateLocalStorage();
-    };
+        resetBoard();
+    }
+
+    $scope.board = angular.fromJson(window.localStorage.getItem("board") || resetBoard());
 
 
+    $scope.flip = function () {
+        this.card.cssClass = this.card.cssClass === "flip" ? "" : "flip";
+    }
+
+   
     $scope.setPosition = function () {
 
         var cardId = parseInt(this.cardId);
@@ -91,35 +77,17 @@ function CardsController($scope) {
             }
         });
 
-        updateLocalStorage();
+        updateLocalStorage($scope);
     }
 
-    $scope.removeStory = function ()
-    {
+    $scope.removeStory = function () {
         this.card.stories.splice(this.$index, 1);
-        updateLocalStorage();
+        updateLocalStorage($scope);
     }
-
-    $scope.updateStory = function (id, title) {
-
-        angular.forEach($scope.board.cards, function (card) {
-
-            angular.forEach(card.stories, function (story) {
-                if (story.$$hashKey === id) {
-                    story.title = title;
-                    return;
-                }
-            });
-
-        });
-
-        updateLocalStorage();
-    };
-
 
     $scope.addStory = function () {
 
-        var card = $scope.board.cards[parseInt($scope.status) - 1];
+        var card = $scope.board.cards[parseInt($scope.board.status) - 1];
 
         card.stories.push({
             title: $scope.title,
@@ -127,24 +95,9 @@ function CardsController($scope) {
             criteria: $scope.criteria
         });
 
-        updateLocalStorage();
+        updateLocalStorage($scope);
         $('#myModal').modal('hide');
     };
-
-
-    angular.element(document).ready(function () {
-        $(".list-group").sortable({
-            connectWith: ".list-group",
-            placeholder: "ui-state-highlight",
-            dropOnEmpty: true,
-            handle: '.glyphicon-move',
-            update: function (event, ui) {
-                $scope.$digest();
-                updateLocalStorage();
-            }
-        });
-
-    });
 }
 
 angular.module('scrumBoard', []).directive('contenteditable', function () {
@@ -153,23 +106,14 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
         require: 'ngModel',
         link: function (scope, elm, attrs, ctrl) {
             // view -> model
-            elm.on('blur', function () {
+            elm.on('blur', function (e) {
+
                 scope.$apply(function () {
-                    scope.updateStory(scope.story.$$hashKey, elm.html());
+                    scope.story.title = elm.html();
+                    updateLocalStorage(scope.$parent);
                 });
             });
         }
-    };
-}).directive('jqsortable', function () {
-    "use strict";
-    return {
-        require: 'ngModel',
-        link: function (scope, elm, attrs, ctrl) {
-
-
-
-        }
-
     };
 });
 
