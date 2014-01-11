@@ -54,6 +54,7 @@ function CardsController($scope) {
 
     $scope.flip = function () {
         this.card.cssClass = this.card.cssClass === "flip" ? "" : "flip";
+        updateLocalStorage($scope);
     }
 
    
@@ -109,7 +110,17 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
             elm.on('blur', function (e) {
 
                 scope.$apply(function () {
-                    scope.story.title = elm.html();
+                    var control = ctrl;
+                    var attribs = attrs;
+                    if (attribs.ngModel === "title")
+                    {
+                        scope.story.title = elm.html();
+                    }
+                    else
+                    {
+                        scope.story.criteria = elm.html();
+                    }
+
                     updateLocalStorage(scope.$parent);
                 });
             });
