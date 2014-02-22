@@ -38,16 +38,15 @@
             <div class="col-md-2" ng-repeat="card in board.cards">
                 <h2>{{card.title}}</h2>
 
-                <ul class="list-group" data-status="{{card.status}}">
-                    <li ng-repeat="story in card.stories" class="list-group-item" ng-model="story">
+                <ul class="list-group" data-status="{{card.status}}" bin="bin" droppable  id="{{card.cardInfo}}" ng-model="card">
+                    <li ng-repeat="story in card.stories" class="list-group-item" ng-model="story" draggable id="{{story.storyId}}">
                         <span class="glyphicon glyphicon-remove" ng-click="removeStory()"></span>
                         <span class="glyphicon glyphicon-refresh pull-right" ng-click="flip()"></span>
-                        
-                        <div class=" item {{card.cssClass}}" >
+
+                        <div class=" item {{card.cssClass}}">
                             <div class="front">
                                 <span class="badge">{{story.points}}</span>
                                 <div contenteditable="true" ng-model="title">{{story.title}}</div>
-                                <select ng-model="cardId" ng-change="setPosition()" ng-options="c.status as c.title for c in board.cards"></select>
                             </div>
                             <div class="back">
                                 <div contenteditable="true" ng-model="criteria">{{story.criteria}}</div>
