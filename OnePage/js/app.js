@@ -191,12 +191,7 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
 
                     var cardtoTakeStory = currentScope.$parent.card;
 
-                    cardtoTakeStory.stories.push({
-                        title: storyToCopy.title,
-                        points: storyToCopy.points,
-                        criteria: storyToCopy.criteria,
-                        storyId: storyToCopy.storyId
-                    });
+                    cardtoTakeStory.stories.push(storyToCopy);
 
                     updateLocalStorage(currentScope.$parent.board);
 
