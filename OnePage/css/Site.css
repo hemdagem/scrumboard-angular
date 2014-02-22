@@ -21,8 +21,24 @@ h2 {
 }
 
 .list-group {
-    min-height: 5px;
+    min-height: 15px;
     border: 1px solid black;
+}
+
+.move {
+    
+}
+.drag {
+
+
+    
+}
+.over {
+
+    border: 2px dotted black;
+    min-height: 40px;
+    background-color: gray;
+    
 }
 
 .list-group-item {

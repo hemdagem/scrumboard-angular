@@ -71,29 +71,6 @@ function CardsController($scope) {
 
     $scope.flip = function () {
         this.card.cssClass = this.card.cssClass === "flip" ? "" : "flip";
-        //updateLocalStorage($scope.board);
-    };
-
-    $scope.setPosition = function () {
-
-        var cardId = parseInt(this.cardId);
-        var storyToCopy = this.story;
-        this.card.stories.splice(this.$index, 1);
-
-        angular.forEach($scope.board.cards, function (cardItem) {
-
-            if (cardItem.status === cardId) {
-                cardItem.stories.push({
-                    title: storyToCopy.title,
-                    points: storyToCopy.points,
-                    criteria: storyToCopy.criteria,
-                    storyId: storyToCopy.storyId
-                });
-                return;
-            }
-        });
-
-        updateLocalStorage($scope.board);
     };
 
     $scope.removeStory = function () {
@@ -142,7 +119,7 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
     };
 }).directive('draggable', function () {
     return function (scope, element) {
-        // this gives us the native JS object
+       
         var el = element[0];
 
         el.draggable = true;
@@ -172,11 +149,9 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
     return {
         require: 'ngModel',
         scope: {
-
             drop: '&',
-            bin: '=' // bi-directional scope
         },
-        link: function (scope, element, attrs, ctrl) {
+        link: function (scope, element) {
             // again we need the native object
             var el = element[0];
 
