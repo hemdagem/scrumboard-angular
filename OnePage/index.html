@@ -76,17 +76,14 @@
                                     <label for="status">Status</label>
                                     <select id="status" ng-model="board.status" required name="status" ng-options="c.status as c.title for c in board.cards"></select>
                                 </p>
-
                                 <p>
                                     Acceptance Criteria
                                     <textarea id="criteria" name="criteria" required rows="3" class="form-control" ng-model="criteria"> </textarea>
                                 </p>
-
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Add</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
                             </div>
                         </form>
                     </div>

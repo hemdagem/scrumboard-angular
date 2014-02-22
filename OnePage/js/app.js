@@ -3,33 +3,15 @@
 /*global $ */
 
 function guid() {
-    function _p8(s) {
+    function p8(s) {
         var p = (Math.random().toString(16) + "000000000").substr(2, 8);
         return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
     }
-    return _p8() + _p8(true) + _p8(true) + _p8();
+    return p8() + p8(true) + p8(true) + p8();
 }
 
 function updateLocalStorage(board) {
     window.localStorage.setItem("board", angular.toJson(board));
-}
-
-function getStory(id) {
-
-    var storyToReturn = null;
-    var board = angular.fromJson(window.localStorage.getItem("board"));
-    angular.forEach(board.cards, function (cardItem) {
-
-        angular.forEach(cardItem.stories, function(story) {
-
-            if (story.storyId === id) {
-
-                storyToReturn= story;
-            }
-           
-        });
-    });
-    return storyToReturn;
 }
 
 function resetBoard() {
@@ -119,7 +101,7 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
     };
 }).directive('draggable', function () {
     return function (scope, element) {
-       
+
         var el = element[0];
 
         el.draggable = true;
@@ -127,10 +109,15 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
         el.addEventListener(
             'dragstart',
             function (e) {
+                var currentScope = scope;
                 e.dataTransfer.effectAllowed = 'move';
-                e.dataTransfer.setData('Text', this.id);
-                this.classList.add('drag');
 
+                var ddScope = {};
+                ddScope.card = currentScope.card;
+                ddScope.story = currentScope.story;
+
+                e.dataTransfer.setData('scope', angular.toJson(ddScope));
+                this.classList.add('drag');
                 return false;
             },
             false
@@ -180,40 +167,35 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
                 if (e.stopPropagation) e.stopPropagation();
 
                 this.classList.remove('over');
-                var storyId = e.dataTransfer.getData('Text');
+                var transferredScope = angular.fromJson(e.dataTransfer.getData('scope'));
 
                 scope.$apply(function (currentScope) {
 
-                    var status = currentScope.$parent.card.status;
-                    
-                    var storyToCopy = getStory(storyId);
-                    
+                    var storyToCopy = transferredScope.story;
+                    var card = transferredScope.card;
                     var keepgoing = true;
-                    angular.forEach(currentScope.$parent.board.cards, function (card) {
 
-                        if (keepgoing) {
-                            angular.forEach(card.stories, function(story, index) {
-                                if (story.storyId === storyId) {
-                                    card.stories.splice(index, 1);
+                    angular.forEach(currentScope.$parent.board.cards, function (cardItem) {
+
+                        if (keepgoing && cardItem.cardInfo === card.cardInfo) {
+
+                            angular.forEach(cardItem.stories, function (story, index) {
+                                if (story.storyId === storyToCopy.storyId) {
+                                    cardItem.stories.splice(index, 1);
                                     keepgoing = false;
                                 }
                             });
+
                         }
                     });
-                    keepgoing = true;
-                    angular.forEach(currentScope.$parent.board.cards, function (cardItem) {
 
-                        if (keepgoing) {
-                            if (cardItem.status === status) {
-                                cardItem.stories.push({
-                                    title: storyToCopy.title,
-                                    points: storyToCopy.points,
-                                    criteria: storyToCopy.criteria,
-                                    storyId: storyToCopy.storyId
-                                });
-                                keepgoing = false;
-                            }
-                        }
+                    var cardtoTakeStory = currentScope.$parent.card;
+
+                    cardtoTakeStory.stories.push({
+                        title: storyToCopy.title,
+                        points: storyToCopy.points,
+                        criteria: storyToCopy.criteria,
+                        storyId: storyToCopy.storyId
                     });
 
                     updateLocalStorage(currentScope.$parent.board);
