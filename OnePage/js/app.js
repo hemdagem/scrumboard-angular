@@ -82,7 +82,7 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
     return {
         require: 'ngModel',
         link: function (scope, elm, attrs) {
-            // view -> model
+            
             elm.on('blur', function (e) {
 
                 scope.$apply(function () {
@@ -204,5 +204,3 @@ angular.module('scrumBoard', []).directive('contenteditable', function () {
         }
     };
 });
-
-
