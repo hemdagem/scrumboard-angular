@@ -10,7 +10,6 @@ h2 {
     cursor: pointer;
 }
 
-
 .glyphicon.glyphicon-refresh.pull-right:hover {
     cursor: pointer;
 }
@@ -26,19 +25,13 @@ h2 {
 }
 
 .move {
-    
 }
 .drag {
-
-
-    
 }
 .over {
-
     border: 2px dotted black;
     min-height: 40px;
     background-color: gray;
-    
 }
 
 .list-group-item {
@@ -50,7 +43,6 @@ h2 {
         -webkit-transform: rotateX(-180deg);
         -moz-transform: rotateX(-180deg);
     }
-
 
     .list-group-item .item {
         -webkit-transform-style: preserve-3d;
