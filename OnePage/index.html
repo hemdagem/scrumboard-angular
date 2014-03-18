@@ -38,7 +38,7 @@
             <div class="col-md-2" ng-repeat="card in board.cards">
                 <h2>{{card.title}}</h2>
 
-                <ul class="list-group" data-status="{{card.status}}" droppable  id="{{card.cardInfo}}" ng-model="card">
+                <ul class="list-group" data-status="{{card.status}}" droppable id="{{card.cardInfo}}" ng-model="card">
                     <li ng-repeat="story in card.stories" class="list-group-item" ng-model="story" draggable id="{{story.storyId}}">
                         <span class="glyphicon glyphicon-remove" ng-click="removeStory()"></span>
                         <span class="glyphicon glyphicon-refresh pull-right" ng-click="flip()"></span>
