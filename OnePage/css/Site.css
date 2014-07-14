@@ -1,9 +1,12 @@
 body {
     padding-top: 50px;
+    background-color: #34495e;
 }
 
 h2 {
-    text-align: center;
+    text-align: center;  
+      color: #fff;
+
 }
 
 .glyphicon.glyphicon-remove:hover {
@@ -21,17 +24,16 @@ h2 {
 
 .list-group {
     min-height: 15px;
-    border: 1px solid black;
+    border: 1px solid white;
 }
 
-.move {
-}
-.drag {
+.modal-body {
+    color: #000000;
 }
 .over {
     border: 2px dotted black;
-    min-height: 40px;
-    background-color: gray;
+    min-height: 80px;
+    background-color: #3498db;
 }
 
 .list-group-item {
@@ -49,6 +51,7 @@ h2 {
         -webkit-transition: 0.5s;
         -moz-transform-style: preserve-3d;
         -moz-transition: 0.5s;
+        color: #000000;
     }
 
         .list-group-item .item div {
