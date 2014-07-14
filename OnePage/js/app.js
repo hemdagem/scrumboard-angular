@@ -2,6 +2,7 @@
 /*global angular */
 /*global $ */
 
+
 function guid() {
     function p8(s) {
         var p = (Math.random().toString(16) + "000000000").substr(2, 8);
@@ -72,7 +73,11 @@ function CardsController($scope) {
 
         updateLocalStorage($scope.board);
         $('#myModal').modal('hide');
+        
     };
+    
+    document.getElementsByClassName("board")[0].style.display = 'block';
+
 }
 
 angular.module('scrumBoard', []).directive('contenteditable', function () {
