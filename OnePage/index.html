@@ -36,7 +36,7 @@
 
     <div class="container board">
         <div class="row">
-            <div class="col-xs-3" ng-repeat="card in board.cards">
+            <div class="col-xs-12 col-md-3" ng-repeat="card in board.cards">
                 <h2 ng-bind="card.title"> </h2>
 
                 <ul class="list-group" data-status="{{card.status}}" droppable id="{{card.cardInfo}}" ng-model="card">
