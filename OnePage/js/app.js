@@ -75,8 +75,7 @@ function CardsController($scope) {
         $('#myModal').modal('hide');
         
     };
-    
-    document.getElementsByClassName("board")[0].style.display = 'block';
+   
 
 }
 
